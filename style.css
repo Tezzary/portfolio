@@ -1,0 +1,39 @@
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    /*--success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;*/
+    --light-color: #B9C0DA;
+    --dark-color: #403F4C;
+}
+
+body {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.projectsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+.project {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+
+
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    min-width: 500px;
+    flex-basis: 45%;
+    aspect-ratio: 9/5; /*7/4 pretty good too*/
+}
