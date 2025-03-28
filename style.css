@@ -51,8 +51,8 @@ body {
     transition: 0.5s;
 }
 .project:hover {
-    background-color: var(--dark-color);
-    color: var(--light-color);
+    /*background-color: var(--dark-color);
+    color: var(--light-color);*/
     scale: 1.02;
     /*filter: blur(2px); find way to only blue image*/
     
