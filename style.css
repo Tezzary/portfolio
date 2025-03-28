@@ -17,6 +17,23 @@ body {
     padding: 0;
     text-align: center;
 }
+nav {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    margin-bottom: 20px;
+}
+.navElement {
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+}
+.navElement > * {
+    padding: 0 10px;
+}
+
+
 
 .projectsContainer {
     display: flex;
@@ -50,10 +67,27 @@ body {
 
     transition: 0.5s;
 }
+.project > h2 {
+    transition: 0.5s;
+    font-size: 2em;
+    text-shadow: 
+    -2px -2px 0 var(--light-color), 
+    2px -2px 0 var(--light-color), 
+    -2px 2px 0 var(--light-color), 
+    2px 2px 0 var(--light-color);
+}
 .project:hover {
     /*background-color: var(--dark-color);
     color: var(--light-color);*/
     scale: 1.02;
     /*filter: blur(2px); find way to only blue image*/
     
+}
+.project:hover > h2 {
+    color: var(--light-color);
+    text-shadow: 
+    -1px -1px 0 var(--dark-color),
+    1px -1px 0 var(--dark-color),
+    -1px 1px 0 var(--dark-color),
+    1px 1px 0 var(--dark-color);
 }
