@@ -1,11 +1,8 @@
 :root {
     --primary-color: #007bff;
     --secondary-color: #6c757d;
-    /*--success-color: #28a745;
-    --info-color: #17a2b8;
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;*/
     --light-color: #B9C0DA;
+    --lighter-color: #dce1f3;
     --dark-color: #403F4C;
 }
 
@@ -19,8 +16,7 @@ body {
 nav {
     display: flex;
     justify-content: space-between;
-    background-color: var(--light-color);
-    color: var(--dark-color);
+    color: var(--light-color);
     margin-bottom: 20px;
 }
 .navElement {
@@ -28,11 +24,35 @@ nav {
     display: flex;
     align-items: center;
 }
-.navElement > * {
+.navElement > button {
     padding: 0 10px;
+    color: var(--light-color);
+    background-color: var(--dark-color);
+    border: 0;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+.navElement > button:hover {
+    cursor: pointer;
+    color: var(--lighter-color);
 }
 
-
+.content {
+    justify-content: center;
+    display: flex;
+}
+.content > * {
+    margin: 10px;
+}
+.profilePicture {
+    width: 400px;
+    height: 300px;
+    object-position: center top;
+    border-radius: 10%;
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
 
 .projectsContainer {
     display: flex;
