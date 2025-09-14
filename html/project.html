@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LH73GN6749"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-LH73GN6749');
+    </script>
+
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <div id="navbar"></div>
+    <script>
+    fetch("/html/navbar.html")
+        .then(res => res.text())
+        .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+        });
+    </script>
+    
+    <div id="project-content"></div>
+
+    <script>
+    // get project name from query string, e.g., projects.html?project=project1
+    const params = new URLSearchParams(window.location.search);
+    const projectName = params.get("project") || "default";
+
+    fetch(`projects/data/${projectName}.md`)
+        .then(res => res.text())
+        .then(md => {
+        document.getElementById("project-content").innerHTML = marked.parse(md);
+        })
+        .catch(() => {
+        document.getElementById("project-content").innerHTML = "<p>Project not found.</p>";
+        });
+    </script>
+    <h1>GOLFZ.IO</h1>
+    <a href="https://golfz.io">here</a>
+</body>
+</html>

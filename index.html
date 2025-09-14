@@ -21,7 +21,7 @@
 <body>
     <div id="navbar"></div>
     <script>
-    fetch("navbar.html")
+    fetch("html/navbar.html")
         .then(res => res.text())
         .then(data => {
         document.getElementById("navbar").innerHTML = data;
@@ -29,7 +29,7 @@
     </script>
 
     <div class="content">
-        <img class="profilePicture" src="pycon.jpg" alt="Pycon AU 2023">
+        <img class="profilePicture" src="resources/pycon.jpg" alt="Pycon AU 2023">
         <div>
             <h1>Zach Everett</h1>
         </div>

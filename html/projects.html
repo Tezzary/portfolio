@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Home</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="/style.css">
         
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-LH73GN6749"></script>
@@ -21,7 +21,7 @@
 <body>
     <div id="navbar"></div>
     <script>
-    fetch("navbar.html")
+    fetch("/html/navbar.html")
         .then(res => res.text())
         .then(data => {
         document.getElementById("navbar").innerHTML = data;
@@ -31,7 +31,7 @@
     
     <div class="projectsContainer">
         <div id="golfzio" class="project">
-            <img src="golfzio.png" alt="GOLFZ.IO">
+            <img src="/resources/golfzio.png" alt="GOLFZ.IO">
             <h2>
                 <i class="fa-brands fa-react"></i>
                 <i class="fa-brands fa-node"></i>
@@ -44,7 +44,7 @@
             </p>
         </div>
         <div id="rlposter" class="project">
-            <img src="rlposter.png" alt="Rocket League Pro Replay YouTube Poster">
+            <img src="/resources/rlposter.png" alt="Rocket League Pro Replay YouTube Poster">
             <h2>
                 <i class="fa-brands fa-python"></i>
                 <br>
@@ -56,7 +56,7 @@
             </p>
         </div>
         <div class="project">
-            <img src="atarcalculator.png" alt="VCE Atar Calculator">
+            <img src="/resources/atarcalculator.png" alt="VCE Atar Calculator">
             <h2>
                 <i class="fa-brands fa-js"></i>
                 <br>
@@ -67,7 +67,7 @@
             </p>
         </div>
         <div class="project">
-            <img src="rustwebsocket.png" alt="Rust Websocket Implementation">
+            <img src="/resources/rustwebsocket.png" alt="Rust Websocket Implementation">
             <h2>
                 <i class="fa-brands fa-rust"></i>
                 <br>
@@ -75,7 +75,7 @@
             </h2>
         </div>
         <div class="project">
-            <img src="rustraytracer.png" alt="Rust + Many Languages Raytracer">
+            <img src="/resources/rustraytracer.png" alt="Rust + Many Languages Raytracer">
             <h2>
                 <i class="fa-brands fa-rust"></i>
                 <br>
@@ -83,6 +83,6 @@
             </h2>
         </div>
     </div>
-    <script src="projects.js"></script>
+    <script src="/projects.js"></script>
 </body>
 </html>

@@ -1,7 +1,6 @@
 
-document.getElementById('golfzio').addEventListener('click', function() {
-    location.href = 'golfzio.html';
-});
-document.getElementById('rlposter').addEventListener('click', function() {
-    location.href = 'rlposter.html';
-});
+for (let element of document.getElementsByClassName('project')) {
+    element.addEventListener('click', function() {
+        location.href = "/html/project.html?project=" + element.id;
+    });
+}

@@ -3,122 +3,120 @@
     --secondary-color: #6c757d;
     --light-color: #B9C0DA;
     --lighter-color: #dce1f3;
-    --dark-color: #403F4C;
+    --dark-color: #2B2A33;
+    --radius: 12px;
+    --shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    --transition: all 0.3s ease;
+    --max-width: 1200px;
 }
 
 body {
     background-color: var(--dark-color);
     color: var(--light-color);
-    font-family: Arial, sans-serif;
+    font-family: "Inter", "Roboto", system-ui, sans-serif;
     margin: 0;
     padding: 0;
+    line-height: 1.6;
 }
+
+/* NAVBAR */
 nav {
     display: flex;
     justify-content: space-between;
-    color: var(--light-color);
-    margin-bottom: 20px;
-}
-.navElement {
-    padding: 10px 30px;
-    display: flex;
     align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(6px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: var(--dark-color);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 .navElement > button {
-    padding: 0 10px;
+    background: none;
+    border: none;
     color: var(--light-color);
-    background-color: var(--dark-color);
-    border: 0;
-    font-size: 1.5em;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s;
 }
 .navElement > button:hover {
+    color: var(--primary-color);
     cursor: pointer;
-    color: var(--lighter-color);
 }
 
+
+/* CONTENT */
 .content {
+    max-width: var(--max-width);
+    margin: 2rem auto;
+    display: flex;
     justify-content: center;
-    display: flex;
-}
-.content > * {
-    margin: 10px;
-}
-.profilePicture {
-    width: 400px;
-    height: 300px;
-    object-position: center top;
-    border-radius: 10%;
-    object-fit: cover;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-.projectsContainer {
-    display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    margin: 0 auto;
-    max-width: 1400px;
+    gap: 2rem;
+    padding: 0 1rem;
 }
+
+.profilePicture {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: var(--shadow);
+}
+
+/* PROJECTS */
+.projectsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
 .project {
-    /*colouring*/
-    /*background-color: var(--light-color);*/
-    color: var(--light-color);
-
-    /*Dimensions*/
-    border: 0;
-    border-radius: 10px;
-    padding: 10px;
-    margin: 10px;
-    min-width: 640px; /*projectsContainer max-width/2 - 4*margin*/
-    flex-basis: 45%;
-
-    /*Flex*/
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
-
-    /*Inside*/
-    background-size: cover;
-
-
-    transition: 0.5s;
 }
-.project > h2 {
-    transition: 0.5s;
-    font-size: 1.6em;
-    margin-bottom: 0;
-    /*
-    text-shadow: 
-    -2px -2px 0 var(--light-color), 
-    2px -2px 0 var(--light-color), 
-    -2px 2px 0 var(--light-color), 
-    2px 2px 0 var(--light-color);*/
-}
-.project > p {
-    margin-top: 5px;
-}
-.project > img {
+
+.project img {
     width: 100%;
-    aspect-ratio: 9/5; /*7/4 pretty good too*/
+    aspect-ratio: 16/9;
     object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.project h2 {
+    font-size: 1.4rem;
+    margin: 1rem;
+    transition: var(--transition);
+}
+
+.project p {
+    margin: 0 1rem 1.5rem;
+}
+
 .project:hover {
     cursor: pointer;
-    /*background-color: var(--dark-color);
-    color: var(--light-color);*/
-    scale: 1.02;
-    border: 2px solid var(--light-color);
-    /*filter: blur(2px); find way to only blue image*/
-    
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
 }
-.project:hover > h2 {
-    color: var(--light-color);
-    text-shadow: 
-    -1px -1px 0 var(--dark-color),
-    1px -1px 0 var(--dark-color),
-    -1px 1px 0 var(--dark-color),
-    1px 1px 0 var(--dark-color);
+
+.project:hover h2 {
+    color: var(--primary-color);
+    text-shadow: none;
 }
