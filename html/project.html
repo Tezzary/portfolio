@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Home</title>
-    <link rel="stylesheet" type="text/css" href="/style.css">
+    <head>
+        <title>Home</title>
+        <link rel="stylesheet" type="text/css" href="/style.css">
+        
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LH73GN6749"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+            
+        gtag('config', 'G-LH73GN6749');
+        </script>
+
+        <script src="https://kit.fontawesome.com/fd807d2bb9.js" crossorigin="anonymous"></script>
+        
     
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LH73GN6749"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-LH73GN6749');
-    </script>
-
-</head>
+    </head>
 <body>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -27,14 +30,17 @@
         });
     </script>
     
-    <div id="project-content"></div>
-
+    <div class="content" >
+        <div class="blogBody">
+            <div id="project-content"></div>
+        </div>
+    </div>
     <script>
     // get project name from query string, e.g., projects.html?project=project1
     const params = new URLSearchParams(window.location.search);
     const projectName = params.get("project") || "default";
 
-    fetch(`projects/data/${projectName}.md`)
+    fetch(`/projects/${projectName}.md`)
         .then(res => res.text())
         .then(md => {
         document.getElementById("project-content").innerHTML = marked.parse(md);
@@ -43,7 +49,5 @@
         document.getElementById("project-content").innerHTML = "<p>Project not found.</p>";
         });
     </script>
-    <h1>GOLFZ.IO</h1>
-    <a href="https://golfz.io">here</a>
 </body>
 </html>

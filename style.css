@@ -66,6 +66,16 @@ nav {
     padding: 0 1rem;
 }
 
+.blogBody {
+    max-width: 600px;
+    width: 100%;
+}
+.blogBody img {
+    max-width: 100%;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin: 1rem 0;
+}
 .profilePicture {
     width: 320px;
     height: 320px;
