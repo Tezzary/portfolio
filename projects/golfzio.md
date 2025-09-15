@@ -124,7 +124,7 @@ This becomes important when you need to start thinking about deploying the serve
 
 Take AWS where GOLFZ.IO used to be hosted on a Melbourne EC2 instance (Since moved to DigitalOcean). They charge $0.114 per GB of data out from the Asia Pacific (Melbourne) region.
 
-We can then 
+This can then be used to calculate a daily cost per player count per server:
 
 | Avg Player Count | Bytes Per Tick | GB Per Day | Cost Per Day EC2 ($) |
 |------------------|----------------|------------|----------------------|
@@ -136,3 +136,37 @@ We can then
 | 100              | 80000          | 207.3600   | $23.6390             |
 
 As we can see it starts off very cheap for lower player counts but due to the quadratic nature of the relationship between player count and network data output, this can become very very expenive very very quickly.
+
+This was the first route of networking I chose for GOLFZ.IO
+
+### 5. Networking 2.0
+
+I then wanted to think of new ways to improve the networking for the project. I then decided to go with an approach known as Deterministic Lockstep. This approach allows the server to keep authority over the gamestate while all users browsers do their own physics calculations on the client side to stay synced with the server.
+
+This new archetecture follows this different structure:
+
+1. Users connect to server
+2. Server sends one message of the full current gamestate snapshot and current tick count
+3. Server and client both simulate the game seperately using the same physics library
+4. When a user wants to complete an action in the game they send the action to the server
+5. When server receives action if it is approved send to all clients the action with an added current tick count.
+6. Clients then receive data from the server only when an action is completed and complete the action in the simulation when client catches up to that tick.
+7. If client receives action after tick already completed backtrack to an old tick and recalculate all ticks since.
+
+```mermaid
+flowchart TD
+    A[User connects to server] --> B[Server sends full gamestate snapshot + tick count]
+    B --> C[Client and Server both simulate game using physics library]
+    C --> D[User performs action and sends it to Server]
+    D --> E[Server receives action]
+    E --> F{Action approved?}
+    F -- No --> G[Server ignores or rejects action]
+    F -- Yes --> H[Server broadcasts action + tick count to all clients]
+    H --> I[Client receives action]
+    I --> J{Has client reached that tick yet?}
+    J -- No --> K[Wait until tick, then apply action in simulation]
+    J -- Yes --> L[Rollback to old tick and recalculate all ticks since]
+    K --> M[Continue simulation]
+    L --> M[Continue simulation]
+```
+This approach also has other benefits of making it super easy to implement interpolation of player positions between ticks, meaning if you play on a high refresh rate monitor e.g. 144hz or 240hz the game can take advantage of that by interpolating between ticks every frame rather than being hard stuck at the same framerate as the servers tickrate.
