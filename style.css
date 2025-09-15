@@ -135,7 +135,7 @@ nav {
     flex-direction: column;
 }
 
-.project img {
+.project > img {
     width: 100%;
     aspect-ratio: 16/9;
     object-fit: cover;
@@ -160,4 +160,21 @@ nav {
 .project:hover h2 {
     color: var(--primary-color);
     text-shadow: none;
+}
+
+
+/* CUSTOM ICONS */
+
+.tag-icons {
+    display: inline-flex; 
+    align-items: center; 
+    margin-bottom: 20px; 
+}
+.tag-icons i {
+    margin-right: 10px; 
+}
+.custom-icon {
+    height: 1em;
+    filter: invert(1) sepia(1) saturate(5) hue-rotate(180deg);
+    margin-right: 10px; 
 }
