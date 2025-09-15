@@ -116,26 +116,30 @@ Network usage!
 
 As Steven Howse the creator of the viral multiplayer browser game [Slither.io](https://slither.io) said about his game ["It’s incredibly expensive because of the amount of bandwidth [the] game uses"](https://news.ycombinator.com/item?id=11929961).
 
-With the server sending out 30 updates per second to each player, and each update containing the location of all players in the game, if we let number of players = n, this would mean that each tick the server would have to send out n x (n x (4 + 4)) bytes of data. This being each player gets sent 8 bytes of data per player (a 32 bit float per x and y coordinate).
+With the server sending out 30 updates per second to each player, and each update containing the location of all players in the game, if we let number of players = n, this would mean that each tick the server would have to send out <i>n x (n x (4 + 4) + 4 + 54)</i> bytes of data. This being each player gets sent 8 bytes of data per player (a 32 bit float per x and y coordinate) and also the mandatory 4 bytes from the websocket protocol and 54 bytes from TCP.
 
-More simply this is <i>8n<sup>2</sup></i> bytes of data sent out per tick.
+More simply this is <i>8n<sup>2</sup> + 58n</i> bytes of data sent out per tick.
 
 This becomes important when you need to start thinking about deploying the server in a production environment that uses cloud computing.
 
 Take AWS where GOLFZ.IO used to be hosted on a Melbourne EC2 instance (Since moved to DigitalOcean). They charge $0.114 per GB of data out from the Asia Pacific (Melbourne) region.
 
-This can then be used to calculate a daily cost per player count per server:
+This can then be used to calculate a monthly cost per player count per server:
 
-| Avg Player Count | Bytes Per Tick | GB Per Day | Cost Per Day EC2 ($) |
-|------------------|----------------|------------|----------------------|
-| 1                | 8              | 0.0207     | $0.0024              |
-| 5                | 200            | 0.5184     | $0.0591              |
-| 10               | 800            | 2.0736     | $0.2364              |
-| 20               | 3200           | 8.2944     | $0.9456              |
-| 50               | 20000          | 51.8400    | $5.9098              |
-| 100              | 80000          | 207.3600   | $23.6390             |
+<!-- f(n)=(8n^2 + 58n) GB PER MONTH COLUMN-->
+<!-- f(n)=((8n^2 + 58n)*30*60*60*24*30.4167/1000/1000/1000) GB PER MONTH COLUMN-->
+<!-- f(n)=((8n^2 + 58n)*30*60*60*24*30.4167/1000/1000/1000*0.114 COST PER MONTH COLUMN) -->
 
-As we can see it starts off very cheap for lower player counts but due to the quadratic nature of the relationship between player count and network data output, this can become very very expenive very very quickly.
+| Avg Player Count | Bytes Per Tick | GB Per Month | Cost Per Month EC2 ($) |
+|------------------|----------------|--------------|------------------------|
+| 1                | 66             | 5.2034       | $0.59                  |
+| 5                | 490            | 38.6316      | $4.40                  |
+| 10               | 1380           | 108.7993     | $12.40                 |
+| 20               | 4360           | 343.7428     | $39.19                 |
+| 50               | 22900          | 1805.4380    | $205.82                |
+| 100              | 85800          | 6764.4794    | $771.15                |
+
+As we can see it starts off very cheap for lower player counts but due to the quadratic nature of the relationship between player count and network data output, this can become very very expenive very very quickly especially since this doesn't even account for the overhead networking costs of TCP and Websockets.
 
 This was the first route of networking I chose for GOLFZ.IO
 
@@ -143,30 +147,51 @@ This was the first route of networking I chose for GOLFZ.IO
 
 I then wanted to think of new ways to improve the networking for the project. I then decided to go with an approach known as Deterministic Lockstep. This approach allows the server to keep authority over the gamestate while all users browsers do their own physics calculations on the client side to stay synced with the server.
 
-This new archetecture follows this different structure:
+This new architecture follows this different structure:
 
-1. Users connect to server
-2. Server sends one message of the full current gamestate snapshot and current tick count
-3. Server and client both simulate the game seperately using the same physics library
-4. When a user wants to complete an action in the game they send the action to the server
-5. When server receives action if it is approved send to all clients the action with an added current tick count.
-6. Clients then receive data from the server only when an action is completed and complete the action in the simulation when client catches up to that tick.
-7. If client receives action after tick already completed backtrack to an old tick and recalculate all ticks since.
+![IMAGE](/resources/golfzio/network2.png) 
 
-```mermaid
-flowchart TD
-    A[User connects to server] --> B[Server sends full gamestate snapshot + tick count]
-    B --> C[Client and Server both simulate game using physics library]
-    C --> D[User performs action and sends it to Server]
-    D --> E[Server receives action]
-    E --> F{Action approved?}
-    F -- No --> G[Server ignores or rejects action]
-    F -- Yes --> H[Server broadcasts action + tick count to all clients]
-    H --> I[Client receives action]
-    I --> J{Has client reached that tick yet?}
-    J -- No --> K[Wait until tick, then apply action in simulation]
-    J -- Yes --> L[Rollback to old tick and recalculate all ticks since]
-    K --> M[Continue simulation]
-    L --> M[Continue simulation]
-```
-This approach also has other benefits of making it super easy to implement interpolation of player positions between ticks, meaning if you play on a high refresh rate monitor e.g. 144hz or 240hz the game can take advantage of that by interpolating between ticks every frame rather than being hard stuck at the same framerate as the servers tickrate.
+The most important difference is that instead of every tick the server sending player locations to every user, the server instead becomes more of an event based relay system that also keeps track of the game state so it can verify all player inputs before passing them on.
+
+This approach also has other benefits of making it super easy to implement interpolation of player positions between ticks, meaning if you play on a high refresh rate monitor e.g. 144hz or 240hz the game can take advantage of that by interpolating between ticks every frame rather than being hard stuck at the same framerate as the servers tickrate which makes the game way smoother.
+
+But is this better?
+
+This solution has the downside that the game becomes a lot more intensive to run for clients as they now instead of just having solely a rendering job, also have to run the full server physics simulation themselves. This is not a huge issue in this scenario as this is not a hugely hardware intensive game to run. If we were talking about a more complicated triple A game it would probably be a different story and this would be a huge drawback.
+
+But for the networking comparison lets redo the math:
+
+let n = number of players
+let m = maximum strokes (9)
+
+Every player on round start will be sent the full match data similarly to the original networking route meaning on the first tick every player is sent:
+= <i>n x (4 + 4) + 54 + 4</i>
+= <i>8n + 54</i> bytes
+then every time a player hits a ball (maximum of m times per round) the angle and power(both 32 bit floats) must be sent to all players which also account for TCP/Websocket overhead gives:
+
+= <i>n x m x (4 + 4 + 54 + 4)</i>
+= <i>n x 9 x 66</i>
+= <i>594n</i> bytes relayed to each player each round
+
+Adding these equations together and accounting for all players this gives
+
+= <i>n x (8n + 54 + 594n)</i>
+= <i>n x (604n + 54)</i>
+= <i>604n<sup>2</sup> + 54n</i> bytes sent by the server each round
+
+Now this equation looks a lot worse than the old networking route but this equation calculates how much bandwidth is used in an entire roughly 1 minute route of the game rather than per tick which there will be roughly 1800 of per match.
+
+Lets redo the monthly cost calculations in terms of games with this new route instead of ticks:
+
+
+<!-- f(n)=(604n^2 + 54n) BYTES PER GAME COLUMN-->
+<!-- f(n)=((604n^2 + 54n)*60*24*30.4167)/1000/1000/1000 GB PER MONTH COLUMN -->
+<!-- f(n)=((604n^2 + 54n)*60*24*30.4167)/1000/1000/1000*0.114 COST PER MONTH COLUMN -->
+| Avg Player Count | Bytes Per Game | GB Per Month | Cost Per Month EC2 ($) |
+|------------------|----------------|--------------|------------------------|
+| 1                | 658            | 0.028809     | $0.003283              |
+| 5                | 15370          | 0.672889     | $0.076725              |
+| 10               | 60940          | 2.668588     | $0.304211              |
+| 20               | 242680         | 10.626937    | $1.211469              |
+| 50               | 1512700        | 66.283805    | $7.554159              |
+| 100              | 604540         | 264.818227   | $30.174678             |
