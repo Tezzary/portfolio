@@ -114,9 +114,25 @@ This solution worked but had one big flaw.
 
 Network usage!
 
+As Steven Howse the creator of the viral multiplayer browser game [Slither.io](https://slither.io) said about his game ["It’s incredibly expensive because of the amount of bandwidth [the] game uses"](https://news.ycombinator.com/item?id=11929961).
+
 With the server sending out 30 updates per second to each player, and each update containing the location of all players in the game, if we let number of players = n, this would mean that each tick the server would have to send out n x (n x (4 + 4)) bytes of data. This being each player gets sent 8 bytes of data per player (a 32 bit float per x and y coordinate).
 
 More simply this is <i>8n<sup>2</sup></i> bytes of data sent out per tick.
 
-This is 
-This means in a game of
+This becomes important when you need to start thinking about deploying the server in a production environment that uses cloud computing.
+
+Take AWS where GOLFZ.IO used to be hosted on a Melbourne EC2 instance (Since moved to DigitalOcean). They charge $0.114 per GB of data out from the Asia Pacific (Melbourne) region.
+
+We can then 
+
+| Avg Player Count | Bytes Per Tick | GB Per Day | Cost Per Day EC2 ($) |
+|------------------|----------------|------------|----------------------|
+| 1                | 8              | 0.020736   | $0.002363904         |
+| 5                | 200            | 0.5184     | $0.0590976           |
+| 10               | 800            | 2.0736     | $0.2363904           |
+| 20               | 3200           | 8.2944     | $0.9455616           |
+| 50               | 20000          | 51.84      | $5.90976             |
+| 100              | 80000          | 207.36     | $23.63904            |
+
+This isn't a huge problem for a small player count
