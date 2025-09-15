@@ -176,7 +176,7 @@ Adding these equations together and accounting for all players this gives
 = <i>n x (604n + 54)</i>
 = <i>604n<sup>2</sup> + 54n</i> bytes sent by the server each round
 
-Now this equation looks a lot worse than the old networking route but this equation calculates how much bandwidth is used in an entire roughly 1 minute route of the game rather than per tick which there will be roughly 1800 of per match.
+Now this equation looks a lot worse than the old networking route but this equation calculates how much bandwidth is used in an entire roughly 1 minute round of the game rather than per tick which there will be roughly 1800 of per match.
 
 Lets redo the monthly cost calculations in terms of games with this new route instead of ticks:
 
