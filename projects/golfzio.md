@@ -128,11 +128,11 @@ We can then
 
 | Avg Player Count | Bytes Per Tick | GB Per Day | Cost Per Day EC2 ($) |
 |------------------|----------------|------------|----------------------|
-| 1                | 8              | 0.020736   | $0.002363904         |
-| 5                | 200            | 0.5184     | $0.0590976           |
-| 10               | 800            | 2.0736     | $0.2363904           |
-| 20               | 3200           | 8.2944     | $0.9455616           |
-| 50               | 20000          | 51.84      | $5.90976             |
-| 100              | 80000          | 207.36     | $23.63904            |
+| 1                | 8              | 0.0207     | $0.0024              |
+| 5                | 200            | 0.5184     | $0.0591              |
+| 10               | 800            | 2.0736     | $0.2364              |
+| 20               | 3200           | 8.2944     | $0.9456              |
+| 50               | 20000          | 51.8400    | $5.9098              |
+| 100              | 80000          | 207.3600   | $23.6390             |
 
-This isn't a huge problem for a small player count
+As we can see it starts off very cheap for lower player counts but due to the quadratic nature of the relationship between player count and network data output, this can become very very expenive very very quickly.
