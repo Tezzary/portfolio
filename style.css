@@ -1,15 +1,32 @@
 :root {
-    --primary-color: #007bff;
-    --secondary-color: #6c757d;
-    --light-color: #B9C0DA;
-    --lighter-color: #dce1f3;
-    --dark-color: #2B2A33;
-    --radius: 12px;
-    --shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    --transition: all 0.3s ease;
-    --max-width: 1200px;
+    /* Core brand colors */
+    --primary-color: #2563eb;      /* brighter blue, easier contrast */
+    --secondary-color: #6b7280;    /* neutral gray, versatile */
+    
+    /* Supporting tones */
+    --light-color: #e5e7eb;        /* softer gray for backgrounds */
+    --lighter-color: #f3f4f6;      /* almost white, good for sections */
+    --dark-color: #1f2937;         /* dark gray, not pure black */
+
+    /* Accent (optional, for highlights or links) */
+    --accent-color: #f59e0b;       /* warm amber, works with blue */
+
+    /* Layout & UI */
+    --radius: 10px;                /* slightly smaller, cleaner */
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --transition: all 0.25s ease-in-out;
+    --max-width: 1100px;           /* tighter, more readable line length */
 }
 
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: var(--light-color);
+    margin-top: 0;
+    line-height: 1.2;
+}
 body {
     background-color: var(--dark-color);
     color: var(--light-color);
