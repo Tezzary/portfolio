@@ -101,10 +101,7 @@ The game would work on a tick based system, where the game server runs at a tick
 The most technical part of the project was the networking and optimizing the networking to reduce server costs.
 
 Initially The networking had the structure:
-1. Users connect to server
-2. Server simulates game physics every tick
-3. Server listens for messages from users, specifically requests to hit ball
-4. Server then sends out to all users each tick the location of all player balls
+![IMAGE](/resources/golfzio/network1.png)
 
 This is the easiest and safest solution. The server at all times holds authority over the game simulation. It only listens to requests to hit the ball, meaning it can apply checks such as is the players ball stopped before hitting or is this a valid hit at this moment. This means the server can at any time reject a request from the client to perform an action in the game if it doesn't approve the action. 
 
@@ -195,3 +192,19 @@ Lets redo the monthly cost calculations in terms of games with this new route in
 | 20               | 242680         | 10.626937    | $1.211469              |
 | 50               | 1512700        | 66.283805    | $7.554159              |
 | 100              | 604540         | 264.818227   | $30.174678             |
+
+As we can see this route is substantially cheaper than the original networking solution using 20-30 times less bandwidth at a given player count. It is also worth noting that this is a worst case scenario where every player uses all 9 strokes on a hole where in most cases it will actually be substantially less than this.
+
+### 6. Accounts + Database
+
+This is where the accounts server comes into action, the accounts server is just a NodeJS Express API that handles all authentication/authorisation and purchases.
+
+The accounts server also connects to a MySQL database that stores all of this data.
+
+Once a player is authenticated a JWT token is passed to the client for future authorisation and also stores information such as ball colour presets which are handed to the websocket server on connection so that it can pass that information to other users for them to render players.
+
+On the main menu there is a simple create account/log in menu to authenticate.
+
+The websocket game server also uses the account API itself to increase the levels and gold of players as they play their matches.
+
+The account server API also allows the frontend to call the API and render the leaderboard on the main menu.

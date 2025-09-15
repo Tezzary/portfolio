@@ -107,9 +107,10 @@ nav {
 }
 .profilePicture {
     width: 320px;
-    height: 320px;
-    border-radius: 50%;
-    object-fit: cover;
+    border-radius: 10%;
+    /*move down image 20px*/
+    
+    object-fit: fill;
     box-shadow: var(--shadow);
 }
 
