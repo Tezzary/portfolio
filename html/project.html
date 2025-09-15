@@ -20,6 +20,16 @@
     </head>
 <body>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- highlight.js (syntax highlighting) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+    <script>
+        marked.setOptions({
+            highlight: function(code, lang) {
+            return hljs.highlight(code, { language: lang || 'plaintext' }).value;
+            }
+        });
+    </script>
 
     <div id="navbar"></div>
     <script>
@@ -43,10 +53,14 @@
     fetch(`/projects/${projectName}.md`)
         .then(res => res.text())
         .then(md => {
-        document.getElementById("project-content").innerHTML = marked.parse(md);
+            document.getElementById("project-content").innerHTML = marked.parse(md);
+            // run highlight on all code blocks
+            document.querySelectorAll('#project-content pre code').forEach(el => {
+            hljs.highlightElement(el);
+            });
         })
         .catch(() => {
-        document.getElementById("project-content").innerHTML = "<p>Project not found.</p>";
+            document.getElementById("project-content").innerHTML = "<p>Project not found.</p>";
         });
     </script>
 </body>

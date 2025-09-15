@@ -29,7 +29,7 @@ This led to images such as the one above being created generating some very nice
 
 This idea of 'rerunning until solvable' could also be used for other aspects of creating interesting solutions such as, rerun the algorithm if solution isn't atleast 20 tiles in length or more than 40 tiles in length.  
 
-```JS
+```js
 //re-run no solution
 if (path === -1) {
     continue
@@ -44,4 +44,4 @@ if(path.length > 40) {
 }
 ```
 
-Using this setup the maze solver was creating very unique patterns, very reliably.
+Using this setup the maze solver was creating very unique patterns, very reliably and very randomly.
