@@ -136,7 +136,7 @@ This can then be used to calculate a monthly cost per player count per server:
 | 50               | 22900          | 1805.4380    | $205.82                |
 | 100              | 85800          | 6764.4794    | $771.15                |
 
-As we can see it starts off very cheap for lower player counts but due to the quadratic nature of the relationship between player count and network data output, this can become very very expenive very very quickly especially since this doesn't even account for the overhead networking costs of TCP and Websockets.
+As we can see it starts off very cheap for lower player counts but due to the quadratic nature of the relationship between player count and network data output, this can become very very expenive very very quickly.
 
 This was the first route of networking I chose for GOLFZ.IO
 
@@ -158,23 +158,25 @@ This solution has the downside that the game becomes a lot more intensive to run
 
 But for the networking comparison lets redo the math:
 
-let n = number of players
+let n = number of players  
 let m = maximum strokes (9)
 
 Every player on round start will be sent the full match data similarly to the original networking route meaning on the first tick every player is sent:
-= <i>n x (4 + 4) + 54 + 4</i>
-= <i>8n + 54</i> bytes
-then every time a player hits a ball (maximum of m times per round) the angle and power(both 32 bit floats) must be sent to all players which also account for TCP/Websocket overhead gives:
 
-= <i>n x m x (4 + 4 + 54 + 4)</i>
-= <i>n x 9 x 66</i>
-= <i>594n</i> bytes relayed to each player each round
+= <i>n x (4 + 4) + 54 + 4</i>  
+= <i>8n + 54</i> bytes  
 
-Adding these equations together and accounting for all players this gives
+then every time a player hits a ball (maximum of m times per round) the angle and power(both 32 bit floats) must be sent to all players which also accounting for TCP/Websocket overhead gives:
 
-= <i>n x (8n + 54 + 594n)</i>
-= <i>n x (604n + 54)</i>
-= <i>604n<sup>2</sup> + 54n</i> bytes sent by the server each round
+= <i>n x m x (4 + 4 + 54 + 4)</i>  
+= <i>n x 9 x 66</i>  
+= <i>594n</i> bytes relayed to each player each round  
+
+Adding these equations together and accounting for all players this gives:
+
+= <i>n x (8n + 54 + 594n)</i>  
+= <i>n x (604n + 54)</i>  
+= <i>604n<sup>2</sup> + 54n</i> bytes sent by the server each round  
 
 Now this equation looks a lot worse than the old networking route but this equation calculates how much bandwidth is used in an entire roughly 1 minute round of the game rather than per tick which there will be roughly 1800 of per match.
 
