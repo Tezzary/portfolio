@@ -8,14 +8,14 @@
     --lighter-color: #f3f4f6;      /* almost white, good for sections */
     --dark-color: #1f2937;         /* dark gray, not pure black */
 
-    /* Accent (optional, for highlights or links) */
+    /* Accent */
     --accent-color: #f59e0b;       /* warm amber, works with blue */
 
     /* Layout & UI */
-    --radius: 10px;                /* slightly smaller, cleaner */
+    --radius: 10px;
     --shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
     --transition: all 0.25s ease-in-out;
-    --max-width: 1100px;           /* tighter, more readable line length */
+    --max-width: 1100px;
 }
 
 a {
@@ -49,38 +49,77 @@ body {
 }
 
 /* NAVBAR */
+/* NAVBAR */
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background: rgba(0,0,0,0.3);
-    backdrop-filter: blur(6px);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--dark-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background: var(--dark-color);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+/* Left / right containers */
+.navLeft, .navRight {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
 }
-.navElement > button {
-    background: none;
-    border: none;
-    color: var(--light-color);
-    font-size: 1rem;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    transition: color 0.3s;
+
+/* Icon links */
+.navIcon {
+  color: var(--light-color);
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
 }
-.navElement > button:hover {
-    color: var(--primary-color);
-    cursor: pointer;
+.navIcon:hover {
+  color: var(--primary-color);
+}
+.navIcon > i {
+    font-size: 1.5rem;
+}
+
+/* Text links */
+.navRight a {
+  color: var(--light-color);
+  font-size: 1rem;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Animated underline for text links */
+.navRight a:not(.navIcon)::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--primary-color);
+  transition: width 0.3s ease;
+}
+.navRight a:hover {
+  color: var(--primary-color);
+}
+.navRight a:hover::after {
+  width: 100%;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  nav {
+    padding: 0.75rem 1rem;
+  }
+  .navRight {
+    gap: 1rem;
+  }
+  .navRight a {
+    font-size: 0.9rem;
+  }
 }
 
 
@@ -105,20 +144,21 @@ nav {
     box-shadow: var(--shadow);
     margin: 1rem 0;
 }
+
 .profilePicture {
-    width: 320px;
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 1/1;
     border-radius: 10%;
-    /*move down image 20px*/
-    
-    object-fit: fill;
+    object-fit: cover;
+    object-position: 60% center;
     box-shadow: var(--shadow);
 }
-
 
 /* PROJECTS */
 .projectsContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     max-width: var(--max-width);
     margin: 0 auto;
@@ -162,9 +202,7 @@ nav {
     text-shadow: none;
 }
 
-
 /* CUSTOM ICONS */
-
 .tag-icons {
     display: inline-flex; 
     align-items: center; 
@@ -177,4 +215,32 @@ nav {
     height: 1em;
     filter: invert(1) sepia(1) saturate(5) hue-rotate(180deg);
     margin-right: 10px; 
+}
+
+/* ------------------ */
+/* RESPONSIVE DESIGN */
+/* ------------------ */
+@media (max-width: 768px) {
+    nav {
+        padding: 0.75rem 1rem;
+    }
+    .content {
+        margin: 1rem auto;
+        gap: 1rem;
+    }
+    h1 {
+        font-size: 1.75rem;
+    }
+    h2 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .projectsContainer {
+        grid-template-columns: 1fr !important;
+    }
+    .profilePicture {
+        max-width: 240px;
+    }
 }
