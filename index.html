@@ -1,40 +1,49 @@
+
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Home</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Zach Everett | Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link rel="stylesheet" type="text/css" href="style.css">
-        
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LH73GN6749"></script>
-        <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-            
-        gtag('config', 'G-LH73GN6749');
-        </script>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/fd807d2bb9.js" crossorigin="anonymous"></script>
+</head>
+<body id="homepage">
+  <!-- NAVBAR -->
+  <div id="navbar"></div>
+  <script>
+    fetch("html/navbar.html")
+      .then(res => res.text())
+      .then(data => document.getElementById("navbar").innerHTML = data);
+  </script>
 
-        <script src="https://kit.fontawesome.com/fd807d2bb9.js" crossorigin="anonymous"></script>
-        
-    
-    </head>
-    <body>
-        <div id="navbar"></div>
-        <script>
-        fetch("html/navbar.html")
-            .then(res => res.text())
-            .then(data => {
-            document.getElementById("navbar").innerHTML = data;
-            });
-        </script>
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <div class="hero-inner">
+      <img class="profilePicture" src="resources/profilepicture.png" alt="Zach Everett at PyCon AU 2023" />
+      <div class="hero-text">
+        <h1>Hi, I’m <span class="highlight">Zach Everett</span></h1>
+        <p>I'm a Computer Science student based in Melbourne, Australia with a passion for a wide range of tech fields working on whatever interests me in the moment.</p>
+        <a href="projects.html" class="cta">See My Projects/Blogs</a>
+      </div>
+    </div>
+  </header>
 
-        <div class="content">
-            <img class="profilePicture" src="resources/profilepicture.png" alt="Pycon AU 2023">
-            <div>
-                <h1>Zach Everett</h1>
-            </div>
-        </div>
-    </body>
-</html> 
+
+  <!-- CONTACT -->
+  <section id="contact" class="content">
+    <div class="center">
+      <h2>Contact</h2>
+      <p>
+        <a href="mailto:zacharyeverett36@gmail.com" class="cta secondary">
+          <i class="fas fa-envelope"></i> Email
+        </a>
+        <a href="https://www.linkedin.com/in/zachary-a-everett" class="cta secondary" target="_blank">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+      </p>
+    </div>
+  </section>
+</body>
+</html>
