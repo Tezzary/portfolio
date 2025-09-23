@@ -12,8 +12,7 @@ This ATAR Calculator has been one of my most successful projects based on user c
 2. Collecting VTAC Data For Calculations
 3. Parsing Data to a JSON File For Use in Site
 4. Creating Site
-5. Implementing Logic to Calculate ATAR's
-6. Hosting
+5. Hosting
 
 ### 1. How ATAR's Are Calculated In The VCE
 
@@ -205,7 +204,7 @@ Now that we understand the data and what it means we need to convert it to a mor
 
 #### Parsing Aggregate To ATAR
 
-As this is the simpler page lets start here the first step was removing all of the lines that didn't have useful information. I found that if a line only had digits, spaces and '.' characters that line was a useful line and I could safely add the line to an 'allowed_lines' array.
+The first step was removing all of the lines that didn't have useful information. I found that if a line only had digits, spaces and '.' characters that line was a useful line and I could safely add the line to an 'allowed_lines' array.
 
 ```Python
 for line in lines:
@@ -247,7 +246,25 @@ To see the whole script refer to [aggregatetoatar.py](https://github.com/Tezzary
 
 #### Parsing Scaling Report
 
-COMING SOON...
+Quite similarly to parsing the other file the lines needed to be broken up into the different parts they represented and converted to JSON. As this process was quite the same I won't discuss this too in depth but feel free to view the script below.
+
+There was substantially more edge cases in this scenario that needed to be handled, the largest problem of this was working out how many words the name of the subject was so that the parser knew when to stop reading the name and start reading the standard deviation as that followed.
+
+This was resolved by checking if the following word after a space was a number to know that the subject name had ended, you can see this solution as well as an example of one of the many edge cases that needed to be handled below:
+
+```Python
+def handleSpace(data, line, index): #returns True if end of subject name
+    if line[index+1:index+6] == "Small": #handles edge case of small subject population
+        data[0] = False
+        data.append("")
+        return True
+    elif line[index+1].isdigit(): #handles edge case spoken about above
+        data.append("")
+        return True
+    return False
+```
+
+To see the whole script refer to [scalingreportstojson.py](https://github.com/Tezzary/AtarCalculator/blob/main/scalingreportstojson.py)
 
 ### 4. Creating Site
 
@@ -260,6 +277,9 @@ From here it was really quite simple the JS just needed to load both JSON files,
 EXCEPT
 
 The data in the scaling report only stores data for scaling results in intervals of 5. This means if the user inputs a study score that isn't already in an interval of 5 the calculator can't immediately map it to a scaled score. In this case I implemented linear interpolation. This means if you get a 32 study score it linearly interpolates your scaled score between the scaled score for a raw score of 30 and a raw score of 35. This leads to it pretty accurately guessing what the scaled score would of been for this raw score.
-### 5. Implementing Logic to Calculate ATAR's
 
-### 6. Hosting
+I also decided to go for a notebook style for the page, using a green text colour, highlighter font title and dotted background I tried to make the site look like it would fit as a page of a students notebook.
+
+### 5. Hosting
+
+Initially the site was hosted under GitHub pages at [https://github.io/Tezzary/AtarCalculator](https://github.io/Tezzary/AtarCalculator) but eventually once the project started gaining mass popularity I decided to purchase the domain name 'vceatarcalculator.com' for the site. At the same time I decided to move the project over to a [DigitalOcean Droplet](https://docs.digitalocean.com/products/droplets/https://docs.digitalocean.com/products/droplets/) as I thought this would give me more flexibility if I ever wanted the project to use a backend or use custom URL rewriting if I ever wanted to add more pages to the site. A droplet just gave substantially more flexibility than a GitHub pages could give for future project expansion. I also chose Sydney as the location for the droplet making load times lightning fast for the 99% of users that are accessing the site from Melbourne.
